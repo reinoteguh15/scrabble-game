@@ -4,17 +4,15 @@ using ScrabbleGame.Interface;
 
 public class GameController
 {
-	private List<Letters>? _listLetters;
-	private int _time;
-	private int _wordsValue;
-	private int _bonus;
-	private int _scorePlayer1;
-	private int _scorePlayer2;
+	private Board scrabbleBoard;
 	
-	
-	public Board GetBoard()
+	public GameController()
 	{
-		Board board = new Board(15);
-		return board;
+		scrabbleBoard = new Board(15);
 	}
+	
+	public int GetBoardSize()
+	{
+		return scrabbleBoard.GetBoardSize();
+	} 
 }

@@ -3,15 +3,15 @@ namespace ScrabbleGame;
 public class Board
 {
 	private int _boardSize;
-	private char[,]? _board;
+	private char[,]? _boardLetters;
 	
 	public Board(int size)
 	{
 		_boardSize = size;
-		_board = new char[size,size];
+		_boardLetters = new char[size,size];
 	}
-	public char[,]? CreateBoard()
+	public int GetBoardSize()
 	{
-		return _board;
+		return _boardSize;
 	}
 }
