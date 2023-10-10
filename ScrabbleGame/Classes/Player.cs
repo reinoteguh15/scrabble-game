@@ -1,12 +1,19 @@
 using ScrabbleGame.Interface;
-
-namespace ScrabbleGame;
+namespace ScrabbleGame.Classes;
 
 public class Player : IPlayer
 {
 	private string? _playerName;
 	private int _playerID;
 	
+	// Constructor
+	public Player(string? name, int id)
+	{
+		_playerName = name;
+		_playerID = id;
+	}
+	
+	// Method
 	public void SetPlayerName(string? playerName)
 	{
 		_playerName = playerName;
@@ -23,5 +30,4 @@ public class Player : IPlayer
 	{
 		return _playerID;
 	}
-	
 }
