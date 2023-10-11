@@ -1,8 +1,7 @@
-using System.Data.Common;
-using System.Threading.Channels;
 using ScrabbleGame.Classes;
 using ScrabbleGame.Enums;
 using ScrabbleGame.Interface;
+
 
 namespace ScrabbleGame.Controller;
 
@@ -10,6 +9,7 @@ class GameController
 {
 	private int _gameTime;
 	private Bag? _wordsBag;
+	private Board _board;
 	private IPlayer? _currentPlayer;
 	private Dictionary<IPlayer, int> _playerScore;
 	private Dictionary<IPlayer, Rack> _playerRack;
@@ -22,6 +22,8 @@ class GameController
 	public GameController()
 	{
 		_wordsBag = new();
+		_board = new(15);
+		_currentPlayer = null;
 		_playerScore = new();
 		_playerRack = new();
 		_playerTurn = new();
@@ -30,6 +32,10 @@ class GameController
 		_letterMultiplier = new();
 	}
 	
+	public void SetUpBoard()
+	{
+		_board.SetUpBoard();
+	}
 	public void SetUpBag()
 	{
 		foreach(var letter in Enum.GetNames(typeof(Letter)))
@@ -126,16 +132,15 @@ class GameController
 			}
 		}
 	}
-	public Dictionary<string, int> GetRemainingTile()
-	{
-		return _tileQuantity;
-	}
 	public void AddPlayer(IPlayer player)
 	{
 		_playerScore.Add(player,0);
+		if (_currentPlayer == null)
+		{
+			_currentPlayer = player;
+		}
 	}
-	
-	public void AddRackToPlayer(IPlayer player)
+	public void SetPlayerRack(IPlayer player)
 	{
 		Rack letterRack = new();
 		Random rnd = new();
@@ -144,15 +149,17 @@ class GameController
 		{
 			List<string> letters = _wordsBag!.GetLettersFromBag();
 			string letter = letters[rnd.Next(1,letters.Count)];
-			letterRack.AddLetterToRack(letter, i);
 			
 			_wordsBag.RemoveLetter(letter);
 			_tileQuantity[letter] -= 1;
+			
+			letterRack.AddLetterToRack(letter, i);
+			
+			
 		}
 				
 		_playerRack!.Add(player,letterRack);
 	}
-	
 	public List<string> GetPlayerRack(IPlayer player)
 	{
 		List<string> listRack = new List<string>();
@@ -163,5 +170,18 @@ class GameController
 		}
 		
 		return listRack;
+	}
+	public Dictionary<string, int> GetRemainingTile()
+	{
+		return _tileQuantity;
+	}
+	public IPlayer GetCurrentPlayer()
+	{
+		return _currentPlayer!;
+	}
+	public int GetPlayerScore(IPlayer player)
+	{  
+		// TODO:
+		throw new NotImplementedException();
 	}
 }
