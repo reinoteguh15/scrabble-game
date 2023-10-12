@@ -2,38 +2,21 @@ namespace ScrabbleGame.Classes;
 
 public class Rack
 {
-	private List<string> _letterRack;
+	private string[] _letterRack;
 	
 	public Rack()
 	{
-		_letterRack = new();
-	}
-	public bool ContainsLetter(string letter)
-	{
-		return _letterRack.Contains(letter);
-	}
-	public void AddLetterToRack(string letter)
-	{
-		if (_letterRack.Count < 7)
-		{
-			_letterRack.Add(letter);
-		}
-		else
-		{
-			return;
-		}
-	}
-	public void RemoveLetterFromRack(string letter)
-	{
-		_letterRack.Remove(letter);
-	}
-	public int GetRackSize()
-	{
-		return _letterRack.Count;
+		_letterRack = new string[7];
 	}
 	
-	public List<string> GetRack()
+	public void AddLetter(string letter, int index)
 	{
-		return _letterRack;
+		_letterRack[index] = letter;
+		
+	}
+	
+	public int GetSize()
+	{
+		return _letterRack.Length;
 	}
 }

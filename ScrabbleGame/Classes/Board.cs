@@ -15,12 +15,12 @@ public class Board
 		_boardBonus = new();
 	}
 	
-	public int GetBoardSize()
+	public int GetSize()
 	{
 		return _boardSize;
 	}
 	
-	public void SetUpBoard()
+	public void SetUp()
 	{
 		List<Position> tripleWord = new()
 		{

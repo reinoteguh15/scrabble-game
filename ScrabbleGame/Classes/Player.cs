@@ -7,10 +7,9 @@ public class Player : IPlayer
 	private int _playerID;
 	
 	// Constructor
-	public Player(string? name, int id)
+	public Player()
 	{
-		_playerName = name;
-		_playerID = id;
+	
 	}
 	
 	// Method
