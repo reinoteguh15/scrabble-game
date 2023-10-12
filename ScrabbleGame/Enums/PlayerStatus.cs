@@ -1,6 +1,6 @@
 namespace ScrabbleGame.Enums;
 
-public enum PlayerTurn
+public enum PlayerStatus
 {
 	Resign,
 	SkipTurn,
