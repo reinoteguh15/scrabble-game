@@ -2,6 +2,7 @@ using ScrabbleGame.Classes;
 using ScrabbleGame.Enums;
 using ScrabbleGame.Interface;
 using System;
+using System.Xml.Serialization;
 
 
 namespace ScrabbleGame.Controller;
@@ -163,7 +164,7 @@ class GameController
 		Rack letterRack = new();
 		Random rnd = new();
 		
-		for (int i = 0; i < letterRack.GetRackSize(); i++)
+		for (int i = 0; i < 7; i++)
 		{
 			List<string> letters = _wordsBag!.GetLettersFromBag();
 			string letter = letters[rnd.Next(1,letters.Count)];
@@ -171,21 +172,14 @@ class GameController
 			_wordsBag.RemoveLetter(letter);
 			_tileQuantity[letter] -= 1;
 			
-			letterRack.AddLetterToRack(letter, i);		
+			letterRack.AddLetterToRack(letter);		
 		}
 				
 		_playerRack!.Add(player,letterRack);
 	}
-	public List<string> GetPlayerRack(IPlayer player)
+	public Rack GetPlayerRack(IPlayer player)
 	{
-		List<string> listRack = new List<string>();
-		string[] playerRack = _playerRack![player].GetRack();
-		for(int i = 0; i < playerRack.Length; i++)
-		{
-			listRack.Add(playerRack[i]);
-		}
-		
-		return listRack;
+		return _playerRack[player];
 	}
 	public Dictionary<string, int> GetRemainingTile()
 	{
@@ -224,6 +218,37 @@ class GameController
 	public int GetPlayerScore(IPlayer player)
 	{  
 		// TODO:
+		throw new NotImplementedException();
+	}
+	public bool PlaceLetterToBoard(IPlayer player, int x, int y, string letter)
+	{
+		Position position = new Position(x, y);
+		Rack playerRack = GetPlayerRack(player);
+		
+		if (playerRack.ContainsLetter(letter))
+		{
+			if ((_board.GetLetter(position) == " ") || (_board.GetLetter(position) == null))
+			{
+				_board.PlaceLetter(letter, position);
+				playerRack.RemoveLetterFromRack(letter);
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}		
+		else
+		{
+			return false;
+		}		
+	}
+	public PlayerTurn GetAction()
+	{
+		throw new NotImplementedException();
+	}
+	public bool isSubmit()
+	{
 		throw new NotImplementedException();
 	}
 	public bool isGameFinish()
