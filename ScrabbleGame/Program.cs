@@ -10,89 +10,79 @@ class Program
 	{
 		Console.WriteLine("Welcome to C# Scrabble Console Game!");
 		Console.WriteLine("====================================");
-		GameController scrabbleGame = new(2);
-
-		// Input player ID & Name
-		for (int i = 0; i < scrabbleGame.PlayersCount; i++)
+		GameController scrabbleGame = new(2);	
+		
+		// Input player Name, ID is set by GameController
+		foreach (IPlayer player in scrabbleGame.GetPlayerList())
 		{
-			Console.Write($"Input Player {i + 1} name: ");
+			Console.Write($"Input Player {player.GetPlayerID()} name: ");
 			string? name = Console.ReadLine();
-			IPlayer player = new Player(name, i);
-			scrabbleGame.AddPlayer(player);
+			player.SetPlayerName(name);
 		}
-
-		// First Turn
+		
+		// Deciding initial player
 		// Each player take one letter tile randomly, who's the closest to "A" will start first
-		scrabbleGame.SetUpBag();
+		scrabbleGame.InitializeBag();
 		foreach (IPlayer player in scrabbleGame.GetPlayerList())
 		{
-			scrabbleGame.SetPlayerRack(player);
+			scrabbleGame.InitializeRack(player);
 		}
-
+		
 		Console.WriteLine("\n~ GAME STARTED ~");
-		Console.WriteLine("(GC): Each player please take a random tile from bag");
-		IPlayer firstPlayer = scrabbleGame.GetFirstPlayer();
+		Console.WriteLine("GC: Each player please take a random tile from bag");
 		foreach (IPlayer player in scrabbleGame.GetPlayerList())
 		{
-			string playerStartingTile = scrabbleGame.GetPlayerStartingTile(player);
-			Console.WriteLine($"Player {player.GetPlayerID() + 1} get tile {playerStartingTile}");
+			Console.WriteLine($"Player {player.GetPlayerID()} get tile {scrabbleGame.GetInitialTile(player)}");
 		}
-		Console.WriteLine($"(GC): Player {firstPlayer.GetPlayerID() + 1} has the tile closest to A, starts first!");
-
-
-		// TO DO: While game is not finished, looping through this
+		IPlayer initialPlayer = scrabbleGame.GetInitialPlayer();
+		Console.WriteLine($"GC: Player {initialPlayer.GetPlayerID()} has the tile closest to A, starts first!");
+		
+		
+		// while()
 		IPlayer currentPlayer = scrabbleGame.GetCurrentPlayer();
-		Console.WriteLine($"\nPlayer {currentPlayer.GetPlayerID() + 1}'s Turn");
-		ShowPlayerRack(scrabbleGame, currentPlayer);
-		Console.WriteLine();
+		Console.WriteLine($"\nPlayer {currentPlayer.GetPlayerID()}'s Turn");
+		ShowRack(scrabbleGame, currentPlayer);
 		DisplayBoard(scrabbleGame);
 		ShowLetterBag(scrabbleGame);
-
-		// TO DO: While submit is not pressed
+		
 		PlacingLetter(scrabbleGame, currentPlayer);
-
-		// while end
+		
 	}
-
-	public static void ShowPlayerRack(GameController game, IPlayer player)
+	
+	public static void ShowRack(GameController gameController, IPlayer player)
 	{
-		Rack playerRack = game.GetPlayerRack(player);
-		Console.WriteLine($"Player {player.GetPlayerID() + 1} Rack:");
+		List<string> playerRack = gameController.GetPlayerRack(player);
+		Console.WriteLine($"Player {player.GetPlayerID()} Rack:");
 		var table = new Table();
-		foreach (var letter in playerRack.GetRack())
+		foreach(var letter in playerRack)
 		{
 			table.AddColumn(letter);
 		}
 		AnsiConsole.Write(table);
+		Console.WriteLine();
 	}
 	public static void ShowLetterBag(GameController gameController)
 	{
 		var letterBag = gameController.GetRemainingTile();
-		int total = 0;
-		Console.WriteLine($"\nLetter Bag: ");
-		foreach (var keyVP in letterBag)
+		Console.WriteLine("\nLetter Bag:");
+		foreach(var keyVP in letterBag)
 		{
 			Console.Write($"{keyVP.Key} ({keyVP.Value}), ");
-			total += keyVP.Value;
 		}
-		Console.WriteLine();
-		Console.WriteLine($"Total: {total} tiles");
 	}
 	public static void DisplayBoard(GameController gameController)
 	{
-		Board board = gameController.GetBoard();
-		int boardSize = board.GetBoardSize();
-		Console.WriteLine("  1   2   3   4   5   6   7   8   9   10  11  12  13  14  15 ");
+		int boardSize = gameController.GetBoardSize();
 		Console.WriteLine("+-----------------------------------------------------------+");
 		for (int y = 0; y < boardSize; y++)
 		{
 			for (int x = 0; x < boardSize; x++)
 			{
 				Position position = new(x, y);
-				string letter = board.GetLetter(position) ?? " ";
+				string letter = gameController.GetBoardLetter(position) ?? " ";
 				Console.Write($"| {letter} ");
 			}
-			Console.WriteLine($"| {y+1}");
+			Console.WriteLine("|");
 			Console.WriteLine("+-----------------------------------------------------------+");
 		}
 	}
@@ -115,7 +105,7 @@ class Program
 				Console.Write($"(GC): Enter the y coordinate: ");
 				bool parseY = int.TryParse(Console.ReadLine(), out int yCoord);
 
-				bool letterPlaced = gameController.PlaceLetterToBoard(player, xCoord - 1, yCoord - 1, letterToPlace!);
+				bool letterPlaced = gameController.PlaceLetter(player, xCoord - 1, yCoord - 1, letterToPlace!);
 				if (letterPlaced == true)
 				{
 					Console.WriteLine($"Letter {letterToPlace} has been placed at ({xCoord},{yCoord}).");
@@ -126,7 +116,7 @@ class Program
 				}
 
 				DisplayBoard(gameController); Console.WriteLine();
-				ShowPlayerRack(gameController, player);
+				ShowRack(gameController, player);
 				ShowLetterBag(gameController);
 
 				Console.Write("\nDo you want to place the letter again? (y/n): ");
@@ -157,11 +147,12 @@ class Program
 			}
 			else
 			{
-				Console.Write("Do you want to skip turn? (y/n)");
+				Console.Write("Do you want to skip turn? (y/n): ");
 				string? skipTurn = Console.ReadLine();
 				if (skipTurn == "y" || skipTurn == "Y")
 				{
-					isContinue = false;
+					Console.WriteLine($"\nPlayer {player.GetPlayerID()+1} has skipped turn");
+					return;
 				}
 				else if (skipTurn == "n" || skipTurn == "N")
 				{
