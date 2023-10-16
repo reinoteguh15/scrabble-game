@@ -41,7 +41,17 @@ public partial class Program
 			for (int x = 0; x < boardSize; x++)
 			{
 				Position position = new(x, y);
-				char letter = gameController.GetBoardLetter(position);
+				
+				char letter;
+				if(gameController.GetBoardLetter(position) == '\0')
+				{
+					letter = (char)32;
+				}
+				else
+				{
+					letter = gameController.GetBoardLetter(position);
+				}
+				
 				Console.Write($"| {letter} ");
 			}
 			Console.WriteLine("|");
