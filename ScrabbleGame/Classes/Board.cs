@@ -5,13 +5,13 @@ using ScrabbleGame.Enums;
 public class Board
 {
 	private int _boardSize;
-	private string[,] _boardLetters;
+	private char[,] _boardLetters;
 	private Dictionary<Position, Bonus> _boardBonus;
 	
 	public Board(int boardSize)
 	{
 		_boardSize = boardSize;
-		_boardLetters = new string[_boardSize, _boardSize];
+		_boardLetters = new char[_boardSize, _boardSize];
 		_boardBonus = new();
 	}
 	
@@ -70,12 +70,12 @@ public class Board
 			_boardBonus.Add(pos, Bonus.DoubleLetter);
 		}
 	}
-	public string GetLetter(Position position)
+	public char GetLetter(Position position)
 	{
 		return _boardLetters[position.GetCoordinateX(), position.GetCoordinateY()];
 	}
 	
-	public void PlaceLetter(string letter, Position position)
+	public void PlaceLetter(char letter, Position position)
 	{
 		_boardLetters[position.GetCoordinateX(), position.GetCoordinateY()] = letter;
 	}

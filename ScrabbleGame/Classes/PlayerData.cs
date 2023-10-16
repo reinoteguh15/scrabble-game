@@ -5,15 +5,22 @@ using ScrabbleGame.Enums;
 public class PlayerData
 {
 	private int _score;
-	private string? _startingTile;
-	private List<string> _rack;
+	private char _startingTile;
+	private List<char> _rack;
 	
 	public PlayerData()
 	{
 		_score = 0;
 		
 		int startingTileScore = new Random().Next(26);
-		_startingTile = Enum.GetName(typeof(Letter), startingTileScore);
+		if (startingTileScore == 0)
+		{
+			_startingTile = '?';
+		}
+		else
+		{
+			_startingTile = char.Parse(Enum.GetName(typeof(Letter), startingTileScore));
+		}
 		
 		_rack = new();
 	}
@@ -22,15 +29,15 @@ public class PlayerData
 	{
 		return _score;
 	}
-	public string? GetStartingTile()
+	public char GetStartingTile()
 	{
 		return _startingTile;
 	}
-	public List<string> GetRack()
+	public List<char> GetRack()
 	{
 		return _rack;
 	}
-	public void AddLetter(string letter)
+	public void AddLetter(char letter)
 	{
 		_rack.Add(letter);
 	}
