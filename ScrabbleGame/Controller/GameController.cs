@@ -7,6 +7,7 @@ using ScrabbleGame.Interface;
 class GameController
 {
 	public int MaxPlayer {get; private set;}
+	private bool _firstMove;
 	public bool GameFinished {get; private set;}
 	private List<char> _lettersBag;
 	private List<string> _wordDictionary;
@@ -22,6 +23,8 @@ class GameController
 	{
 		// Assign maximum number of players
 		MaxPlayer = maxPlayers;
+		
+		_firstMove = true;
 		
 		// Create a new list string for letters bag
 		_lettersBag = new();
@@ -127,10 +130,11 @@ class GameController
 		{		
 			char playerTile = GetInitialTile(player);
 			
-			Letter letterScore = (Letter) Enum.Parse(typeof(LetterScore), playerTile.ToString());
+			Letter letterScore = (Letter) Enum.Parse(typeof(Letter), playerTile.ToString());
 			initialTileScore[i] = (int)letterScore;
 			i++;
 		}
+		
 		int initialPlayer = Array.IndexOf(initialTileScore, initialTileScore.Min());
 		
 		_currentPlayer = _playerList[initialPlayer];
@@ -142,6 +146,7 @@ class GameController
 	}
 	public IPlayer GetNextPlayer()
 	{
+		_firstMove = false;
 		int currentIndex = _playerList.FindIndex(currentPlayer => currentPlayer.Equals(_currentPlayer));
 		if (currentIndex == _playerList.Count - 1)
 		{
@@ -166,7 +171,7 @@ class GameController
 		
 		if (playerRack.Contains(letter))
 		{
-			if ((_board.GetLetter(position) == ' ') || (_board.GetLetter(position) == null))
+			if (_board.GetLetter(position) == '\0')
 			{
 				_board.PlaceLetter(letter, position);
 				playerRack.Remove(letter);
@@ -184,18 +189,21 @@ class GameController
 	}
 	public bool IsValidMove(List<Position> positions)
 	{
-		throw new NotImplementedException();
-	}
-	public bool IsValidWord(string word)
-	{
-		if (_wordDictionary.Contains(word))
+		// bool isConsecutive = true;
+		if (_firstMove && positions.Contains(new Position(7, 7)))
 		{
 			return true;
 		}
-		else
+		
+		if (positions.Count > 1)
 		{
 			return false;
 		}
+		return false;
+	}	
+	public bool IsValidWord(string word)
+	{
+		return _wordDictionary.Contains(word);
 	}
 	public int EvaluateWords(List<Position> positions, string word)
 	{
@@ -208,7 +216,7 @@ class GameController
 	}
 	public bool IsGameFinish()
 	{
-		throw new NotImplementedException();
-		// return false;
+		// throw new NotImplementedException();
+		return false;
 	}
 }
