@@ -7,6 +7,7 @@ using ScrabbleGame.Interface;
 class GameController
 {
 	public int MaxPlayer {get; private set;}
+	public bool GameFinished {get; private set;}
 	private List<string> _lettersBag;
 	private Board _board;
 	private IPlayer? _currentPlayer;
@@ -55,7 +56,7 @@ class GameController
 	{
 		return _board.GetLetter(position);
 	}
-	public void SetUpBoard()
+	public void InitializeBoard()
 	{
 		_board.SetUp();
 	}
@@ -125,18 +126,33 @@ class GameController
 	{
 		return _currentPlayer;
 	}
+	public IPlayer GetNextPlayer()
+	{
+		int currentIndex = _playerList.FindIndex(currentPlayer => currentPlayer.Equals(_currentPlayer));
+		if (currentIndex == _playerList.Count - 1)
+		{
+			_currentPlayer = _playerList[0];
+			return _currentPlayer;
+		}
+		else
+		{
+			_currentPlayer = _playerList[currentIndex + 1];
+			return _currentPlayer;
+		}
+	}
 	public List<string> GetPlayerRack(IPlayer player)
 	{
 		return _playerInfo[player].GetRack();
 	}
+	
 	public bool PlaceLetter(IPlayer player, int x, int y, string letter)
 	{
 		Position position = new Position(x, y);
-		var playerRack = GetPlayerRack(player);
+		List<string> playerRack = GetPlayerRack(player);
 		
 		if (playerRack.Contains(letter))
 		{
-			if ((_board.GetLetter(position) == " ") || (_board.GetLetter(position) == null))
+			if ((_board.GetLetter(position) == "") || (_board.GetLetter(position) == null))
 			{
 				_board.PlaceLetter(letter, position);
 				playerRack.Remove(letter);
@@ -152,13 +168,27 @@ class GameController
 			return false;
 		}		
 	}
+	public bool IsValidMove()
+	{
+		throw new NotImplementedException();
+	}
+	public bool IsValidWord()
+	{
+		throw new NotImplementedException();
+	}
+	public int EvaluateWords(List<Position> positions, string word)
+	{
+		
+		throw new NotImplementedException();
+	}
 	public int GetPlayerScore(IPlayer player)
 	{  
 		// TODO:
 		throw new NotImplementedException();
 	}
-	public bool isGameFinish()
+	public bool IsGameFinish()
 	{
-		throw new NotImplementedException();
+		// throw new NotImplementedException();
+		return false;
 	}
 }
