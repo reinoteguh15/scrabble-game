@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\Batch 5\\Desktop\\Batch 5\\Individual Project\\Scrabble\\ScrabbleGame\\ScrabbleGame.csproj": {}
+    "C:\\Users\\Reino\\OneDrive\\Desktop\\scrabble-game\\ScrabbleGame\\ScrabbleGame.csproj": {}
   },
   "projects": {
-    "c:\\Users\\Batch 5\\Desktop\\Batch 5\\Individual Project\\Scrabble\\ScrabbleGame\\ScrabbleGame.csproj": {
+    "C:\\Users\\Reino\\OneDrive\\Desktop\\scrabble-game\\ScrabbleGame\\ScrabbleGame.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\Batch 5\\Desktop\\Batch 5\\Individual Project\\Scrabble\\ScrabbleGame\\ScrabbleGame.csproj",
+        "projectUniqueName": "C:\\Users\\Reino\\OneDrive\\Desktop\\scrabble-game\\ScrabbleGame\\ScrabbleGame.csproj",
         "projectName": "ScrabbleGame",
-        "projectPath": "c:\\Users\\Batch 5\\Desktop\\Batch 5\\Individual Project\\Scrabble\\ScrabbleGame\\ScrabbleGame.csproj",
-        "packagesPath": "C:\\Users\\Batch 5\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\Batch 5\\Desktop\\Batch 5\\Individual Project\\Scrabble\\ScrabbleGame\\obj\\",
+        "projectPath": "C:\\Users\\Reino\\OneDrive\\Desktop\\scrabble-game\\ScrabbleGame\\ScrabbleGame.csproj",
+        "packagesPath": "C:\\Users\\Reino\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Reino\\OneDrive\\Desktop\\scrabble-game\\ScrabbleGame\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Batch 5\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Reino\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
@@ -37,6 +37,12 @@
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
+          "dependencies": {
+            "Spectre.Console": {
+              "target": "Package",
+              "version": "[0.47.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -53,7 +59,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     }

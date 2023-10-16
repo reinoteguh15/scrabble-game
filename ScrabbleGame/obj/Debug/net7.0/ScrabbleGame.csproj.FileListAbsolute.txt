@@ -13,3 +13,20 @@ C:\Users\Batch 5\Desktop\Batch 5\Individual Project\Scrabble\ScrabbleGame\obj\De
 C:\Users\Batch 5\Desktop\Batch 5\Individual Project\Scrabble\ScrabbleGame\obj\Debug\net7.0\ScrabbleGame.pdb
 c:\Users\Batch 5\Desktop\Batch 5\Individual Project\Scrabble\ScrabbleGame\obj\Debug\net7.0\ScrabbleGame.genruntimeconfig.cache
 c:\Users\Batch 5\Desktop\Batch 5\Individual Project\Scrabble\ScrabbleGame\obj\Debug\net7.0\ref\ScrabbleGame.dll
+C:\Users\Reino\OneDrive\Desktop\scrabble-game\ScrabbleGame\obj\Debug\net7.0\ScrabbleGame.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Reino\OneDrive\Desktop\scrabble-game\ScrabbleGame\obj\Debug\net7.0\ScrabbleGame.AssemblyInfoInputs.cache
+C:\Users\Reino\OneDrive\Desktop\scrabble-game\ScrabbleGame\obj\Debug\net7.0\ScrabbleGame.AssemblyInfo.cs
+C:\Users\Reino\OneDrive\Desktop\scrabble-game\ScrabbleGame\obj\Debug\net7.0\ScrabbleGame.csproj.CoreCompileInputs.cache
+C:\Users\Reino\OneDrive\Desktop\scrabble-game\ScrabbleGame\obj\Debug\net7.0\ScrabbleGame.dll
+C:\Users\Reino\OneDrive\Desktop\scrabble-game\ScrabbleGame\obj\Debug\net7.0\refint\ScrabbleGame.dll
+C:\Users\Reino\OneDrive\Desktop\scrabble-game\ScrabbleGame\obj\Debug\net7.0\ScrabbleGame.pdb
+C:\Users\Reino\OneDrive\Desktop\scrabble-game\ScrabbleGame\bin\Debug\net7.0\ScrabbleGame.exe
+c:\Users\Reino\OneDrive\Desktop\scrabble-game\ScrabbleGame\bin\Debug\net7.0\ScrabbleGame.deps.json
+c:\Users\Reino\OneDrive\Desktop\scrabble-game\ScrabbleGame\bin\Debug\net7.0\ScrabbleGame.runtimeconfig.json
+C:\Users\Reino\OneDrive\Desktop\scrabble-game\ScrabbleGame\bin\Debug\net7.0\ScrabbleGame.dll
+C:\Users\Reino\OneDrive\Desktop\scrabble-game\ScrabbleGame\bin\Debug\net7.0\ScrabbleGame.pdb
+C:\Users\Reino\OneDrive\Desktop\scrabble-game\ScrabbleGame\bin\Debug\net7.0\Spectre.Console.dll
+C:\Users\Reino\OneDrive\Desktop\scrabble-game\ScrabbleGame\obj\Debug\net7.0\ScrabbleGame.csproj.AssemblyReference.cache
+c:\Users\Reino\OneDrive\Desktop\scrabble-game\ScrabbleGame\obj\Debug\net7.0\ScrabbleGame.csproj.CopyComplete
+c:\Users\Reino\OneDrive\Desktop\scrabble-game\ScrabbleGame\obj\Debug\net7.0\ScrabbleGame.genruntimeconfig.cache
+c:\Users\Reino\OneDrive\Desktop\scrabble-game\ScrabbleGame\obj\Debug\net7.0\ref\ScrabbleGame.dll
