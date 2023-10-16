@@ -11,12 +11,12 @@ public partial class Program
 {
 	static void ShowRack(GameController gameController, IPlayer player)
 	{
-		List<string> playerRack = gameController.GetPlayerRack(player);
+		List<char> playerRack = gameController.GetPlayerRack(player);
 		Console.WriteLine($"Player {player.GetPlayerID()} Rack:");
 		var table = new Table();
 		foreach (var letter in playerRack)
 		{
-			table.AddColumn(letter);
+			table.AddColumn(letter.ToString());
 		}
 		AnsiConsole.Write(table);
 	}
@@ -41,7 +41,7 @@ public partial class Program
 			for (int x = 0; x < boardSize; x++)
 			{
 				Position position = new(x, y);
-				string letter = gameController.GetBoardLetter(position) ?? " ";
+				char letter = gameController.GetBoardLetter(position);
 				Console.Write($"| {letter} ");
 			}
 			Console.WriteLine("|");
@@ -62,7 +62,7 @@ public partial class Program
 			{
 			PlaceLetter:
 				Console.Write($"(GC): Player {player.GetPlayerID()}, please enter the letter you want to place: ");
-				string? letterToPlace = Console.ReadLine();
+				char letterToPlace = Console.ReadKey().KeyChar;
 				
 				if (gameController.GetPlayerRack(player).Contains(letterToPlace))
 				{
