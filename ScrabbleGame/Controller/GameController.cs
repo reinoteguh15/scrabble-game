@@ -8,13 +8,14 @@ class GameController
 {
 	public int MaxPlayer {get; private set;}
 	public bool GameFinished {get; private set;}
-	private List<string> _lettersBag;
+	private List<char> _lettersBag;
+	private List<string> _wordDictionary;
 	private Board _board;
 	private IPlayer? _currentPlayer;
 	private List<IPlayer> _playerList;
 	private Dictionary<IPlayer, PlayerData> _playerInfo;
-	private Dictionary<string, int> _tileQuantity;
-	private Dictionary<string, int> _tileScore;
+	private Dictionary<char, int> _tileQuantity;
+	private Dictionary<char, int> _tileScore;
 	private Dictionary<Position, Bonus> _multiplier;
 	
 	public GameController(int maxPlayers)
@@ -24,6 +25,9 @@ class GameController
 		
 		// Create a new list string for letters bag
 		_lettersBag = new();
+		
+		// Create a new list string for word dictionary
+		_wordDictionary = new();
 		
 		// Create a new board with size of 15 x 15
 		_board = new(15);
@@ -52,7 +56,7 @@ class GameController
 	{
 		return _board.GetSize();
 	}
-	public string GetBoardLetter(Position position)
+	public char GetBoardLetter(Position position)
 	{
 		return _board.GetLetter(position);
 	}
@@ -64,16 +68,26 @@ class GameController
 	{
 		foreach (var letter in Enum.GetNames(typeof(Letter)))
 		{
+			char letterChar;
+			if (letter == "Blank")
+			{
+				letterChar = '?';
+			}
+			else
+			{
+				letterChar = char.Parse(letter);
+			}
+			
 			LetterQuantity letterQuantity = (LetterQuantity) Enum.Parse(typeof(LetterQuantity), letter);
 			LetterScore letterScore = (LetterScore) Enum.Parse(typeof(LetterScore), letter);
 			
 			for (int i = 0; i < (int)letterQuantity; i++)
 			{
-				_lettersBag.Add(letter);
+				_lettersBag.Add(letterChar);
 			}
 			
-			_tileQuantity.Add(letter, (int)letterQuantity);
-			_tileScore.Add(letter, (int)letterScore);
+			_tileQuantity.Add(letterChar, (int)letterQuantity);
+			_tileScore.Add(letterChar, (int)letterScore);
 		}
 	}
 	public void InitializeRack(IPlayer player)
@@ -84,7 +98,7 @@ class GameController
 		for (int i = 0; i < 7; i++)
 		{
 			int randomIndex = rnd.Next(1,_lettersBag.Count);
-			string letter = _lettersBag[randomIndex];
+			char letter = _lettersBag[randomIndex];
 						
 			_lettersBag.RemoveAt(randomIndex);
 			_playerInfo[player].AddLetter(letter);
@@ -92,7 +106,7 @@ class GameController
 		}
 				
 	}
-	public Dictionary<string, int> GetRemainingTile()
+	public Dictionary<char, int> GetRemainingTile()
 	{
 		return _tileQuantity;
 	}
@@ -100,7 +114,7 @@ class GameController
 	{
 		return _playerList;
 	}
-	public string? GetInitialTile(IPlayer player)
+	public char GetInitialTile(IPlayer player)
 	{
 		return _playerInfo[player].GetStartingTile();
 	}
@@ -111,9 +125,9 @@ class GameController
 		
 		foreach(IPlayer player in _playerList)
 		{		
-			string? playerTile = GetInitialTile(player);
+			char playerTile = GetInitialTile(player);
 			
-			Letter letterScore = (Letter) Enum.Parse(typeof(LetterScore), playerTile);
+			Letter letterScore = (Letter) Enum.Parse(typeof(LetterScore), playerTile.ToString());
 			initialTileScore[i] = (int)letterScore;
 			i++;
 		}
@@ -140,19 +154,19 @@ class GameController
 			return _currentPlayer;
 		}
 	}
-	public List<string> GetPlayerRack(IPlayer player)
+	public List<char> GetPlayerRack(IPlayer player)
 	{
 		return _playerInfo[player].GetRack();
 	}
 	
-	public bool PlaceLetter(IPlayer player, int x, int y, string letter)
+	public bool PlaceLetter(IPlayer player, int x, int y, char letter)
 	{
 		Position position = new Position(x, y);
-		List<string> playerRack = GetPlayerRack(player);
+		List<char> playerRack = GetPlayerRack(player);
 		
 		if (playerRack.Contains(letter))
 		{
-			if ((_board.GetLetter(position) == "") || (_board.GetLetter(position) == null))
+			if ((_board.GetLetter(position) == ' ') || (_board.GetLetter(position) == null))
 			{
 				_board.PlaceLetter(letter, position);
 				playerRack.Remove(letter);
@@ -168,13 +182,20 @@ class GameController
 			return false;
 		}		
 	}
-	public bool IsValidMove()
+	public bool IsValidMove(List<Position> positions)
 	{
 		throw new NotImplementedException();
 	}
-	public bool IsValidWord()
+	public bool IsValidWord(string word)
 	{
-		throw new NotImplementedException();
+		if (_wordDictionary.Contains(word))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 	public int EvaluateWords(List<Position> positions, string word)
 	{
@@ -183,12 +204,11 @@ class GameController
 	}
 	public int GetPlayerScore(IPlayer player)
 	{  
-		// TODO:
-		throw new NotImplementedException();
+		return _playerInfo[player].GetScore();
 	}
 	public bool IsGameFinish()
 	{
-		// throw new NotImplementedException();
-		return false;
+		throw new NotImplementedException();
+		// return false;
 	}
 }
