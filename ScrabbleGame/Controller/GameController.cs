@@ -13,6 +13,7 @@ class GameController
 	private List<string> _wordDictionary;
 	private Board _board;
 	private IPlayer? _currentPlayer;
+	private IPlayer _winner;
 	private List<IPlayer> _playerList;
 	private Dictionary<IPlayer, PlayerData> _playerInfo;
 	private Dictionary<char, int> _tileQuantity;
@@ -62,6 +63,10 @@ class GameController
 	public char GetBoardLetter(Position position)
 	{
 		return _board.GetLetter(position);
+	}
+	public Bonus GetBonus(Position position)
+	{
+		return _board.GetPositionBonus(position);
 	}
 	public void InitializeBoard()
 	{
@@ -188,11 +193,14 @@ class GameController
 		
 	public bool IsValidMove(List<Position> positions)
 	{
+		int fixedPosition;
 		bool verticalNotChanged = true;
 		bool horizontalNotChanged = true;
 		bool isConsecutive = true;
+		List<int> movementIndex = new();
+		List<int> tempIndex = new();
 		
-		if (_firstMove && !positions.Contains(new Position(7, 7))) return false;
+		if (_firstMove && !positions.Contains(new Position(8, 8))) return false;
 		if (positions.Count > 1)
 		{
 			Position reference = positions[0];
@@ -203,11 +211,52 @@ class GameController
 			}
 			if (horizontalNotChanged)
 			{
+				fixedPosition = positions[0].X;
+				foreach(Position pos in positions)
+				{
+					movementIndex.Add(pos.Y);
+					tempIndex.Add(pos.Y);
+				}
+				movementIndex.Sort();
 				
+				for (int i = movementIndex[0]; i < GetBoardSize(); i++)
+				{
+					if (GetBoardLetter(new Position(fixedPosition, i)) != '\0')
+					{
+						tempIndex.Add(i);
+					}
+				}
 			}
-			if (verticalNotChanged)
+			else if (verticalNotChanged)
 			{
+				fixedPosition = positions[0].Y;
+				foreach (Position pos in positions)
+				{
+					movementIndex.Add(pos.X);
+					tempIndex.Add(pos.X);
+				}
+				movementIndex.Sort();
 				
+				for (int i = movementIndex[0]; i < GetBoardSize(); i++)
+				{
+					if (GetBoardLetter(new Position(i, fixedPosition)) != '\0')
+					{
+						tempIndex.Add(i);
+					}
+				}
+			}
+		}
+		
+		if (movementIndex.Count > 0)
+		{
+			tempIndex.Sort();
+			for (int i = 1; i < tempIndex.Count; i++)
+			{
+				if (tempIndex[i] != tempIndex[i-1] + 1)
+				{
+					isConsecutive = false;
+					break;
+				}
 			}
 		}
 		
@@ -217,14 +266,42 @@ class GameController
 	{
 		return _wordDictionary.Contains(word);
 	}
-	public int EvaluateWords(List<Position> positions, string word)
+	public int EvaluateWords(IPlayer player, List<Position> positions, string word)
 	{
 		
-		throw new NotImplementedException();
+		if (IsValidWord(word) && IsValidMove(positions))
+		{
+			int score = 0;
+			foreach(char letter in word)
+			{
+				score += (int)(LetterScore) Enum.Parse(typeof(LetterScore), letter.ToString());
+			}
+			return score;
+		}
+		else {return 0;}
+		
 	}
 	public int GetPlayerScore(IPlayer player)
 	{  
 		return _playerInfo[player].GetScore();
+	}
+	public PlayerStatus GetPlayerStatus(IPlayer player)
+	{
+		return _playerInfo[player].GetStatus();
+	}
+	public void SetPlayerStatus (IPlayer player, PlayerStatus status)
+	{
+		_playerInfo[player].SetStatus(status);
+	}
+	public bool IsPlayerTurnFinish(IPlayer player)
+	{
+		PlayerStatus status = GetPlayerStatus(player);
+		if (status != PlayerStatus.SkipTurn || status != PlayerStatus.EndTurn) return false;
+		else return true;
+	}
+	public IPlayer GetWinner()
+	{
+		return _winner;
 	}
 	public bool IsGameFinish()
 	{
