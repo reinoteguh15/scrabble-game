@@ -129,8 +129,18 @@ class GameController
 		foreach(IPlayer player in _playerList)
 		{		
 			char playerTile = GetInitialTile(player);
+			string tileString;
 			
-			Letter letterScore = (Letter) Enum.Parse(typeof(Letter), playerTile.ToString());
+			if (playerTile == '?')
+			{
+				tileString = "Blank";
+			}
+			else
+			{
+				tileString = playerTile.ToString();
+			}
+			
+			Letter letterScore = (Letter) Enum.Parse(typeof(Letter), tileString);
 			initialTileScore[i] = (int)letterScore;
 			i++;
 		}
@@ -169,37 +179,39 @@ class GameController
 		Position position = new Position(x, y);
 		List<char> playerRack = GetPlayerRack(player);
 		
-		if (playerRack.Contains(letter))
-		{
-			if (_board.GetLetter(position) == '\0')
-			{
-				_board.PlaceLetter(letter, position);
-				playerRack.Remove(letter);
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}		
-		else
-		{
-			return false;
-		}		
+		if (!playerRack.Contains(letter) || !(_board.GetLetter(position) == '\0')) return false;
+	
+		_board.PlaceLetter(letter, position);
+		playerRack.Remove(letter);
+		return true;
 	}
+		
 	public bool IsValidMove(List<Position> positions)
 	{
-		// bool isConsecutive = true;
-		if (_firstMove && positions.Contains(new Position(7, 7)))
-		{
-			return true;
-		}
+		bool verticalNotChanged = true;
+		bool horizontalNotChanged = true;
+		bool isConsecutive = true;
 		
+		if (_firstMove && !positions.Contains(new Position(7, 7))) return false;
 		if (positions.Count > 1)
 		{
-			return false;
+			Position reference = positions[0];
+			foreach (Position pos in positions)
+			{
+				if (reference.X != pos.X) horizontalNotChanged = false;
+				if (reference.Y != pos.Y) verticalNotChanged = false;
+			}
+			if (horizontalNotChanged)
+			{
+				
+			}
+			if (verticalNotChanged)
+			{
+				
+			}
 		}
-		return false;
+		
+		return (verticalNotChanged || horizontalNotChanged) && isConsecutive;
 	}	
 	public bool IsValidWord(string word)
 	{
