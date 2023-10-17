@@ -2,8 +2,10 @@ namespace ScrabbleGame.Enums;
 
 public enum PlayerStatus
 {
-	Resign,
+	PlacingLetter,
 	SkipTurn,
+	EndTurn,
 	SwapLetter,
+	Resign,
 	Submit
 }
