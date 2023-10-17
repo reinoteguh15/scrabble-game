@@ -7,6 +7,7 @@ public class PlayerData
 	private int _score;
 	private char _startingTile;
 	private List<char> _rack;
+	private PlayerStatus _status;
 	
 	public PlayerData()
 	{
@@ -40,5 +41,13 @@ public class PlayerData
 	public void AddLetter(char letter)
 	{
 		_rack.Add(letter);
+	}
+	public PlayerStatus GetStatus()
+	{
+		return _status;
+	}
+	public void SetStatus(PlayerStatus status)
+	{
+		_status = status;
 	}
 }
