@@ -79,4 +79,9 @@ public class Board
 	{
 		_boardLetters[position.GetCoordinateX(), position.GetCoordinateY()] = letter;
 	}
+	
+	public Bonus GetPositionBonus(Position position)
+	{
+		return _boardBonus[position];
+	}
 }
