@@ -14,9 +14,7 @@ public partial class Program
 	static List<Position> positions = new();
 	static StringBuilder sb = new();
 	static void Main()
-	{
-		
-		
+	{	
 		Console.WriteLine("Welcome to C# Scrabble Console Game!");
 		Console.WriteLine("====================================");
 		
@@ -30,7 +28,7 @@ public partial class Program
 			player.SetPlayerName(name);
 		}
 
-		//Initialize Bag and Player Rack
+		// Initialize Bag and Player Rack
 		scrabbleGame.InitializeBag();
 		foreach (IPlayer player in scrabbleGame.GetPlayerList())
 		{
@@ -157,7 +155,7 @@ public partial class Program
 			Console.Write($"(GC): Enter the y coordinate: ");
 			bool parseY = int.TryParse(Console.ReadLine(), out int yCoord);
 
-			bool letterPlaced = gameController.PlaceLetter(player, (xCoord - 1), (yCoord - 1), letterToPlace);
+			bool letterPlaced = gameController.PlaceLetter(player, xCoord - 1, yCoord - 1, letterToPlace);
 			if (letterPlaced == true)
 			{
 				Console.WriteLine($"Letter {letterToPlace} has been placed at ({xCoord},{yCoord}).");
@@ -182,16 +180,20 @@ public partial class Program
 		// TODO: evaluate the words
 		Console.WriteLine($"\nPlayer {player.GetPlayerID()} has submitted the word");
 		Console.WriteLine("Evaluating the word...");
-
-		if(gameController.IsValidMove(positions))
+		
+		while (!gameController.IsValidMove(positions))
 		{
-			Console.WriteLine("Move is valid !");
+			Console.WriteLine("Move invalid! Please check the placement of your letter tile\n");
+			foreach (Position pos in positions)
+			{
+				gameController.ReturnLetterToRack(player, positions);
+				
+			}			
+			PutLetter(gameController, player);
 		}
-		else
-		{
-			Console.WriteLine("Move invalid! Please check the placement of your letter tile");
-		}
-
+				
+		Console.WriteLine("Move is valid !");
+		
 		int playerPoint = gameController.EvaluateWords(player, positions, sb.ToString());
 		Console.WriteLine($"\nPlayer {player.GetPlayerID()}'s score: {playerPoint}");
 		gameController.SetPlayerStatus(player, PlayerStatus.EndTurn);

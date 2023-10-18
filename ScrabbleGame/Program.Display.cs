@@ -39,7 +39,7 @@ public partial class Program
 			Console.Write($"{y + 1}\t");
 			for (int x = 0; x < boardSize; x++)
 			{
-				Position position = new(x, y);
+				Position position = new (x, y);
 
 				char letter;
 				if (gameController.GetBoardLetter(position) == '\0')
