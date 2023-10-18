@@ -190,6 +190,15 @@ class GameController
 		playerRack.Remove(letter);
 		return true;
 	}
+	public void ReturnLetterToRack (IPlayer player, List<Position> positions)
+	{
+		foreach (Position pos in positions)
+		{
+			char tile = _board.GetLetter(pos);
+			_playerInfo[player].AddLetter(tile);
+			_board.RemoveLetter(pos);
+		}
+	}
 		
 	public bool IsValidMove(List<Position> positions)
 	{
@@ -262,8 +271,24 @@ class GameController
 		
 		return (verticalNotChanged || horizontalNotChanged) && isConsecutive;
 	}	
+	public async Task ReadFile(string filePath)
+	{
+		using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+			using (StreamReader sr = new StreamReader(fs))
+			{
+				while(!sr.EndOfStream)
+				{
+					var line = await sr.ReadLineAsync();
+					if (line != null) _wordDictionary.Add(line);
+				}
+			}
+	}
 	public bool IsValidWord(string word)
 	{
+		string filePath = @"./wordslist.txt";
+		Task readFile = ReadFile(filePath);
+		readFile.Wait();
+		
 		return _wordDictionary.Contains(word);
 	}
 	public int EvaluateWords(IPlayer player, List<Position> positions, string word)
