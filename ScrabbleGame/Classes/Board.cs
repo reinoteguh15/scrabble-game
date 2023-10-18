@@ -79,6 +79,10 @@ public class Board
 	{
 		_boardLetters[position.GetCoordinateX(), position.GetCoordinateY()] = letter;
 	}
+	public void RemoveLetter(Position position)
+	{
+		_boardLetters[position.GetCoordinateX(), position.GetCoordinateY()] = (char)32;
+	}
 	
 	public Bonus GetPositionBonus(Position position)
 	{
